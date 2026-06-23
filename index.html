@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Transport & Load Bookings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="dummy6.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <i class="fa-solid fa-truck-fast worker-logo-icon"></i>
+            <h1> Logistics<span class="dot">.</span></h1>
+        </div>
+        <button id="tips-btn" class="tips-header-btn">
+            <i class="fa-solid fa-piggy-bank"></i> tips
+        </button>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <h2>பாதுகாப்பான மற்றும் விரைவான லோடு சேவைகள்<br><span>Premium Load Booking!</span></h2>
+            <p>2-Wheeler முதல் 10-Wheeler கனரக வாகனங்கள் வரை ஒரே இடத்தில்.</p>
+            
+            <div class="search-box-container">
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-map-pin search-icon"></i>
+                    <input type="text" id="area-search" placeholder="உங்கள் ஏரியா அல்லது பின்கோடு அடிக்கவும்...">
+                </div>
+                <div class="select-wrapper">
+                    <i class="fa-solid fa-truck-moving brief-icon"></i>
+                    <select id="vehicle-filter">
+                        <option value="all">அனைத்து வாகனங்களும்</option>
+                        <option value="2wheeler">2-Wheeler Load (e.g., XL)</option>
+                        <option value="4wheeler">4-Wheeler Load (e.g., Tata Ace)</option>
+                        <option value="6wheeler">6-Wheeler Load (e.g., Truck)</option>
+                        <option value="10wheeler">10-Wheeler Load (e.g., Lorry)</option>
+                    </select>
+                </div>
+                <button id="search-btn">தேடுங்கள்</button>
+            </div>
+        </section>
+
+        <section class="register-trigger-section">
+            <button id="open-form-btn" class="main-register-btn">
+                <i class="fa-solid fa-truck-ramp-box"></i> நீங்கள் ஒரு வாகன உரிமையாளரா? இங்கு இணையுங்கள் (Register)
+            </button>
+        </section>
+
+        <section class="quick-categories">
+            <h3>வாகனப் பிரிவுகள்</h3>
+            <div class="category-chips">
+                <button class="chip active" data-filter="all">All</button>
+                <button class="chip" data-filter="2wheeler"><i class="fa-solid fa-motorcycle"></i> 2-Wheeler (XL)</button>
+                <button class="chip" data-filter="4wheeler"><i class="fa-solid fa-truck-pickup"></i> 4-Wheeler (Tata Ace)</button>
+                <button class="chip" data-filter="6wheeler"><i class="fa-solid fa-truck"></i> 6-Wheeler (Truck)</button>
+                <button class="chip" data-filter="10wheeler"><i class="fa-solid fa-truck-flatbed"></i> 10-Wheeler (Lorry)</button>
+            </div>
+        </section>
+
+        <section class="experts-section">
+            <div class="section-title-area">
+                <h3>கிடைக்கக்கூடிய வாகனங்கள் & ஓட்டுநர்கள்</h3>
+                <span id="results-count">0 வாகனங்கள் உள்ளன</span>
+            </div>
+            <div class="experts-grid" id="transport-grid"></div>
+        </section>
+    </main>
+
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-address-card"></i> புதிய வாகன சேர்க்கை</h3>
+                <span class="close-btn" id="close-reg-btn">&times;</span>
+            </div>
+            <form id="transport-form">
+                <div class="form-group">
+                    <label><i class="fa-solid fa-user"></i> உரிமையாளர் / ஓட்டுநர் பெயர்</label>
+                    <input type="text" id="driver-name" placeholder="உதாரணம்: மாரியப்பன் / ஜான்" required>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fa-solid fa-phone"></i> மொபைல் எண் (WhatsApp எண்)</label>
+                    <input type="tel" id="phone" placeholder="98765xxxxx" required>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fa-solid fa-truck-front"></i> வாகன வகை (Vehicle Type)</label>
+                    <select id="vehicle-type" required>
+                        <option value="2wheeler">2-Wheeler Load (e.g., XL)</option>
+                        <option value="4wheeler">4-Wheeler Load (e.g., Tata Ace)</option>
+                        <option value="6wheeler">6-Wheeler Load (e.g., Truck)</option>
+                        <option value="10wheeler">10-Wheeler Load (e.g., Lorry)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fa-solid fa-money-bill-wave"></i> வாடகை விபரம் (Rate per km / Trip)</label>
+                    <input type="text" id="rate" placeholder="உதாரணம்: ₹300 (Min) / ₹25 per KM" required>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fa-solid fa-map-location-dot"></i> நீங்கள் சேவை வழங்கும் ஏரியா / லொகேஷன்</label>
+                    <input type="text" id="location" placeholder="உதாரணம்: கோயம்பேடு, சென்னை" required>
+                </div>
+
+                <button type="submit" class="submit-btn">விபரங்களைச் சமர்ப்பிக்க</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="tips-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-gem" style="color: #D4AF37;"></i> ஆதரவு அளிக்கவும்</h3>
+                <span class="close-btn" id="close-tips-btn">&times;</span>
+            </div>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <p style="font-size: 14px; color: #A4B3C6;">எங்கள் பிரீமியம் சேவை உங்களுக்குப் பிடித்திருந்தால், சிறு தொகையை வழங்கி எங்களை ஊக்குவிக்கலாம்!</p>
+            </div>
+            <form id="tips-form">
+                <div class="form-group">
+                    <label><i class="fa-solid fa-indian-rupee-sign"></i> தொகையை உள்ளிடவும் (Amount)</label>
+                    <input type="number" id="tips-amount" placeholder="100" min="1" required>
+                </div>
+                <button type="submit" class="submit-btn" style="background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%); color: #0F172A;">
+                    <i class="fa-solid fa-crown"></i> Pay via UPI
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="dummy6.js"></script>
+</body>
+</html>
+
+
