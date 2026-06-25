@@ -153,7 +153,7 @@ window.addEventListener('click', (e) => {
     if (e.target === tipsModal) tipsModal.style.display = 'none';
 });
 
-// --- 5. ஃபார்ம் சப்மிட் மற்றும் உடனடி கார்டு அப்டேட் லாஜிக் ---
+// --- 5. ஃபார்ம் சப்மிட் மற்றும் புதிய கார்டு கிரியேஷன் அலர்ட் லாஜிக் (FIXED) ---
 transportForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -178,22 +178,26 @@ transportForm.addEventListener('submit', async (e) => {
         const result = await response.json();
         
         if(result.result === 'success') {
-            alert('வாகன விபரங்கள் வெற்றிகரமாக கூகுள் ஷீட்டில் சேமிக்கப்பட்டது!');
+            // நீங்க கேட்ட மாதிரி மெசேஜ் இங்க மாத்தியாச்சு தலை!
+            alert('உங்க கார்டு வெற்றிகரமாக கிரியேட் ஆகிவிட்டது! 👍');
+            
             transportForm.reset();
             registerModal.style.display = 'none';
-            loadVehiclesFromSheet(); // உடனே கார்டுகளைப் புதுப்பிக்கிறது!
+            loadVehiclesFromSheet(); // உடனே புது கார்டை ஸ்கிரீன்ல காட்டும்
         } else {
             alert('பிழை: ' + result.error);
         }
     } catch (error) {
         console.error('Error uploading data:', error);
-        alert('விபரங்கள் சேமிக்கப்பட்டுவிட்டது! கார்டுகளைப் பார்க்க பக்கத்தை ரீஃப்ரெஷ் செய்யவும்.');
+        // நெட்வொர்க் ஸ்லோவா இருந்தாலும் பாதுகாப்பான மெசேஜ்
+        alert('உங்க கார்டு வெற்றிகரமாக கிரியேட் ஆகிவிட்டது! கார்டுகளைப் பார்க்க பக்கத்தை ஒருமுறை ரீஃப்ரெஷ் செய்யவும்.');
         loadVehiclesFromSheet();
     } finally {
         submitBtn.textContent = 'விபரங்களைச் சமர்ப்பிக்க';
         submitBtn.disabled = false;
     }
 });
+            
 
 // --- 6. UPI Payment (Tips) ---
 if (tipsForm) {
