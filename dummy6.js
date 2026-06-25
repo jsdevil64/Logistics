@@ -1,5 +1,5 @@
 // 1. உங்களுடைய புதிய கூகுள் ஆப்ஸ் ஸ்கிரிப்ட் வெப் ஆப் URL-ஐ இங்கே பேஸ்ட் செய்யவும்
-const SCRIPT_URL = 'இங்கே_உங்களுடைய_புதிய_WEB_APP_URL_ஐ_போடவும்';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby7LA1bbl_rd7Oa1WqaiZHNexl7sMejHAmNPUFgElbUa8En7SamcCebol94dhvJgHfi/exec';
 
 // --- UPI CONFIG (உங்களின் UPI விபரங்கள்) ---
 const MY_UPI_ID = '8939717405@ybl'; 
