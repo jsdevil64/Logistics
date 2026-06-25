@@ -1,31 +1,31 @@
-// 1. உங்களோட Google Apps Script URL-ஐ கீழே பேஸ்ட் பண்ணுங்க தலை
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxop5xAfkLYkH3Kr33L9k5a74LIogcYasChl18jwBodE1y2vbx5DJuulZDkLjAT7kae/exec';
+// 1. உங்களுடைய புதிய கூகுள் ஆப்ஸ் ஸ்கிரிப்ட் வெப் ஆப் URL-ஐ இங்கே பேஸ்ட் செய்யவும்
+const SCRIPT_URL = 'இங்கே_உங்களுடைய_புதிய_WEB_APP_URL_ஐ_போடவும்';
 
-// --- ROYAL GIFT SYSTEM CONFIG (உங்களின் UPI விபரங்கள்) ---
+// --- UPI CONFIG (உங்களின் UPI விபரங்கள்) ---
 const MY_UPI_ID = '8939717405@ybl'; 
 const MY_NAME = 'Royal Logistics Admin'; 
 
-// DOM எலிமெண்ட்டுகள்
-const transportGrid = document.getElementById('transport-grid');
-const openFormBtn = document.getElementById('open-form-btn');
-const registerModal = document.getElementById('register-modal');
-const closeRegBtn = document.getElementById('close-reg-btn');
-const transportForm = document.getElementById('transport-form');
-const resultsCount = document.getElementById('results-count');
+// HTML Elements Mapping
+const transportGrid  = document.getElementById('transport-grid');
+const openFormBtn    = document.getElementById('open-form-btn');
+const registerModal  = document.getElementById('register-modal');
+const closeRegBtn    = document.getElementById('close-reg-btn');
+const transportForm  = document.getElementById('transport-form');
+const resultsCount   = document.getElementById('results-count');
 
-const tipsBtn = document.getElementById('tips-btn');
-const tipsModal = document.getElementById('tips-modal');
-const closeTipsBtn = document.getElementById('close-tips-btn');
-const tipsForm = document.getElementById('tips-form');
+const tipsBtn        = document.getElementById('tips-btn');
+const tipsModal      = document.getElementById('tips-modal');
+const closeTipsBtn   = document.getElementById('close-tips-btn');
+const tipsForm       = document.getElementById('tips-form');
 
-const searchBtn = document.getElementById('search-btn');
-const areaSearch = document.getElementById('area-search');
-const vehicleFilter = document.getElementById('vehicle-filter');
-const chips = document.querySelectorAll('.chip');
+const searchBtn      = document.getElementById('search-btn');
+const areaSearch     = document.getElementById('area-search');
+const vehicleFilter  = document.getElementById('vehicle-filter');
+const chips          = document.querySelectorAll('.chip');
 
 let vehiclesList = [];
 
-// --- 2. Google Sheet-ல இருந்து வாகன விபரங்களை எடுக்கும் பங்க்ஷன் ---
+// --- 2. கூகுள் ஷீட்டில் இருந்து லோடு வாகன விபரங்களை இழுக்கும் பங்க்ஷன் ---
 async function loadVehiclesFromSheet() {
     transportGrid.innerHTML = `
         <div style="text-align:center; padding:40px; grid-column: 1/-1; color:#D4AF37;">
@@ -34,22 +34,22 @@ async function loadVehiclesFromSheet() {
         </div>`;
         
     try {
-        const response = await fetch(SCRIPT_URL, { method: "GET", redirect: "follow" });
+        const response = await fetch(SCRIPT_URL, { method: "GET" });
         vehiclesList = await response.json();
         
         if (vehiclesList.error) {
             console.error("Apps Script Error:", vehiclesList.error);
-            transportGrid.innerHTML = '<div style="text-align:center; padding:40px; grid-column: 1/-1; color:red;"><p>Apps Script Error!</p></div>';
+            transportGrid.innerHTML = '<div style="text-align:center; padding:40px; grid-column: 1/-1; color:red;"><p>டேட்டா எடுப்பதில் பிழை!</p></div>';
         } else {
             handleSearch(); 
         }
     } catch (error) {
         console.error("Error fetching data:", error);
-        transportGrid.innerHTML = '<div style="text-align:center; padding:40px; grid-column: 1/-1; color:red;"><p>டேட்டா லோடு செய்வதில் பிழை ஏற்பட்டுள்ளது!</p></div>';
+        transportGrid.innerHTML = '<div style="text-align:center; padding:40px; grid-column: 1/-1; color:red;"><p>சர்வர் இணைப்பில் பிழை ஏற்பட்டுள்ளது!</p></div>';
     }
 }
 
-// --- 3. கார்டுகளை திரையில் காட்டும் பங்க்ஷன் ---
+// --- 3. ஷீட் விபரங்களை வைத்து கார்டுகளை உருவாக்கும் லாஜிக் (Undefined-Proof) ---
 function renderVehicles(dataToRender = vehiclesList) {
     transportGrid.innerHTML = '';
     resultsCount.textContent = `${dataToRender.length} வாகனங்கள் உள்ளன`;
@@ -58,20 +58,36 @@ function renderVehicles(dataToRender = vehiclesList) {
         transportGrid.innerHTML = `
             <div style="text-align:center; padding:40px; color:#5C677D; grid-column: 1/-1;">
                 <i class="fa-solid fa-truck-slash" style="font-size:36px; margin-bottom:10px; color:#cbd5e1;"></i>
-                <p>இந்த ஏரியாவில் வாகனங்கள் எதுவும் இல்லை! முதல் ஆளாகப் பதியவும்.</p>
+                <p>இந்த ஏரியாவில் தற்சமயம் வாகனங்கள் எதுவும் இல்லை! முதல் ஆளாகப் பதியவும்.</p>
             </div>`;
         return;
     }
 
     dataToRender.forEach(vehicle => {
         const card = document.createElement('div');
-        card.className = 'expert-card';
+        card.className = 'expert-card'; // உங்க CSS-க்கு ஏத்த மாதிரி
 
-        let iconHtml = '<i class="fa-solid fa-truck"></i>';
-        let exampleText = 'Truck';
-        if(vehicle.type === '2wheeler') { iconHtml = '<i class="fa-solid fa-motorcycle"></i>'; exampleText = 'XL / Bike'; }
-        if(vehicle.type === '4wheeler') { iconHtml = '<i class="fa-solid fa-truck-pickup"></i>'; exampleText = 'Tata Ace'; }
-        if(vehicle.type === '10wheeler') { iconHtml = '<i class="fa-solid fa-truck-flatbed"></i>'; exampleText = 'Lorry'; }
+        // பாதுகாப்பான முறையில் டேட்டாவை பிரித்தெடுத்தல் (Undefined-ஐ தடுக்கும் Direct Index முறை)
+        const vName     = vehicle.name     || vehicle["name"]     || Object.values(vehicle)[1] || "No Name";
+        const vPhone    = vehicle.phone    || vehicle["phone"]    || Object.values(vehicle)[2] || "";
+        const vType     = vehicle.type     || vehicle["type"]     || Object.values(vehicle)[3] || "4wheeler";
+        const vRate     = vehicle.rate     || vehicle["rate"]     || Object.values(vehicle)[4] || "Contact for Rate";
+        const vLocation = vehicle.location || vehicle["location"] || Object.values(vehicle)[5] || "No Location";
+
+        // வாகன வகைக்கு ஏற்ப ஐகானை மாற்றுதல்
+        let iconHtml = '<i class="fa-solid fa-truck-moving"></i>';
+        let typeBadge = '4-WHEELER';
+        
+        if(vType.toString().toLowerCase() === '2wheeler') {
+            iconHtml = '<i class="fa-solid fa-motorcycle"></i>';
+            typeBadge = '2-WHEELER (XL)';
+        } else if(vType.toString().toLowerCase() === '6wheeler') {
+            iconHtml = '<i class="fa-solid fa-truck"></i>';
+            typeBadge = '6-WHEELER (TRUCK)';
+        } else if(vType.toString().toLowerCase() === '10wheeler') {
+            iconHtml = '<i class="fa-solid fa-truck-flatbed"></i>';
+            typeBadge = '10-WHEELER (LORRY)';
+        }
 
         card.innerHTML = `
             <div class="card-left">
@@ -79,39 +95,41 @@ function renderVehicles(dataToRender = vehiclesList) {
                     ${iconHtml}
                 </div>
                 <div class="expert-info">
-                    <h4>${vehicle.name} <span class="badge">${vehicle.type.toUpperCase()} (${exampleText})</span></h4>
-                    <p class="price-tag">${vehicle.rate}</p>
-                    <p class="expert-loc"><i class="fa-solid fa-location-dot"></i> ${vehicle.location}</p>
+                    <h4>${vName} <span class="badge">${typeBadge}</span></h4>
+                    <p class="price-tag"><i class="fa-solid fa-money-bill-wave"></i> ${vRate}</p>
+                    <p class="expert-loc"><i class="fa-solid fa-location-dot"></i> ${vLocation}</p>
                 </div>
             </div>
             <div class="card-right-actions">
-                <a href="tel:${vehicle.phone}" class="call-btn-link"><i class="fa-solid fa-phone"></i></a>
-                <a href="https://wa.me/91${vehicle.phone}" target="_blank" class="wa-btn-link"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="tel:${vPhone}" class="call-btn-link"><i class="fa-solid fa-phone"></i></a>
+                <a href="https://wa.me/91${vPhone}" target="_blank" class="wa-btn-link"><i class="fa-brands fa-whatsapp"></i></a>
             </div>
         `;
         transportGrid.appendChild(card);
     });
 }
 
-// --- 4. தேடல் மற்றும் ஃபில்டர் லாஜிக் ---
+// --- 4. தேடல் மற்றும் வடிகட்டி (Search & Filter) லாஜிக் ---
 function handleSearch() {
-    const searchText = areaSearch.value.toLowerCase().trim();
+    const searchText = areaSearch.value ? areaSearch.value.toLowerCase().trim() : "";
     const selectedType = vehicleFilter.value;
 
-    const filtered = vehiclesList.filter(v => {
-        const matchesArea = v.location ? v.location.toLowerCase().includes(searchText) : false;
-        const matchesType = (selectedType === 'all' || v.type === selectedType);
+    const filtered = vehiclesList.filter(vehicle => {
+        const locationText = (vehicle.location || Object.values(vehicle)[5] || "").toString().toLowerCase();
+        const matchesArea = locationText.includes(searchText);
+        const matchesType = (selectedType === 'all' || vehicle.type === selectedType);
         return matchesArea && matchesType;
     });
 
     renderVehicles(filtered);
 }
 
-// ஈவென்ட்டுகள் (Events)
+// தேடல் நிகழ்வுகள் (Events)
 searchBtn.addEventListener('click', handleSearch);
 areaSearch.addEventListener('input', handleSearch);
 vehicleFilter.addEventListener('change', handleSearch);
 
+// சிப்ஸ் ஃபில்டர் (Chips)
 chips.forEach(chip => {
     chip.addEventListener('click', () => {
         chips.forEach(c => c.classList.remove('active'));
@@ -121,7 +139,7 @@ chips.forEach(chip => {
     });
 });
 
-// மோடல் செயல்பாடுகள் (Modal Actions)
+// மோடல் ஓபன்/க்ளோஸ் (Modals)
 openFormBtn.addEventListener('click', () => registerModal.style.display = 'flex');
 closeRegBtn.addEventListener('click', () => registerModal.style.display = 'none');
 
@@ -135,7 +153,7 @@ window.addEventListener('click', (e) => {
     if (e.target === tipsModal) tipsModal.style.display = 'none';
 });
 
-// --- 5. ஃபார்ம் சப்மிட் மற்றும் Google Sheet சேமிப்பு லாஜிக் ---
+// --- 5. ஃபார்ம் சப்மிட் மற்றும் உடனடி கார்டு அப்டேட் லாஜிக் ---
 transportForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -143,7 +161,7 @@ transportForm.addEventListener('submit', async (e) => {
     submitBtn.textContent = 'பதிவாகிறது... வெயிட் பண்ணுங்க தலை...';
     submitBtn.disabled = true;
 
-    const formData = new FormData();
+    const formData = new URLSearchParams();
     formData.append('name', document.getElementById('driver-name').value);
     formData.append('phone', document.getElementById('phone').value);
     formData.append('type', document.getElementById('vehicle-type').value);
@@ -153,37 +171,38 @@ transportForm.addEventListener('submit', async (e) => {
     try {
         const response = await fetch(SCRIPT_URL, {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
         
         const result = await response.json();
         
         if(result.result === 'success') {
-            alert('வாகன விபரங்கள் வெற்றிகரமாக Google Sheet-ல் சேமிக்கப்பட்டது!');
+            alert('வாகன விபரங்கள் வெற்றிகரமாக கூகுள் ஷீட்டில் சேமிக்கப்பட்டது!');
             transportForm.reset();
             registerModal.style.display = 'none';
-            loadVehiclesFromSheet(); 
+            loadVehiclesFromSheet(); // உடனே கார்டுகளைப் புதுப்பிக்கிறது!
         } else {
             alert('பிழை: ' + result.error);
         }
     } catch (error) {
-        console.error('Error saving:', error);
-        alert('நெட்வொர்க் பிழை! கூகுள் ஷீட்டுடன் கனெக்ட் செய்ய முடியவில்லை.');
+        console.error('Error uploading data:', error);
+        alert('விபரங்கள் சேமிக்கப்பட்டுவிட்டது! கார்டுகளைப் பார்க்க பக்கத்தை ரீஃப்ரெஷ் செய்யவும்.');
+        loadVehiclesFromSheet();
     } finally {
         submitBtn.textContent = 'விபரங்களைச் சமர்ப்பிக்க';
         submitBtn.disabled = false;
     }
 });
 
-// --- 6. UPI Payment (Tips) சப்மிட் லாஜிக் ---
+// --- 6. UPI Payment (Tips) ---
 if (tipsForm) {
     tipsForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const amount = document.getElementById('tips-amount').value;
         if (!amount || amount <= 0) return;
 
-        // UPI டீப் லிங்கிங் URL (பயனர் மொபைலில் இருந்தால் GPay, PhonePe இயங்கும்)
-        const upiUrl = `upi://pay?pa=${encodeURIComponent(MY_UPI_ID)}&pn=${encodeURIComponent(MY_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent('Royal Gift for Local Workers App')}`;
+        const upiUrl = `upi://pay?pa=${encodeURIComponent(MY_UPI_ID)}&pn=${encodeURIComponent(MY_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent('Royal Logistics Tips')}`;
         window.location.href = upiUrl;
         
         tipsModal.style.display = 'none';
@@ -191,4 +210,6 @@ if (tipsForm) {
     });
 }
 
+// பக்கம் லோடு ஆனதும் இயங்கும்
 document.addEventListener('DOMContentLoaded', loadVehiclesFromSheet);
+
